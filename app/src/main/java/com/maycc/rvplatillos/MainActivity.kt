@@ -18,9 +18,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        dishes.add(Dish(R.drawable.cangrejada, "cangrejada", 4.50, 4f))
+        dishes.add(Dish(R.drawable.cangrejada, "Cangrejada", 4.50, 4f))
         dishes.add(Dish(R.drawable.come_bebe, "Come y bebe", 2.50, 3f))
-        dishes.add(Dish(R.drawable.encebollado, "encebollado", 3.50, 3.5f))
+        dishes.add(Dish(R.drawable.encebollado, "Encebollado", 3.50, 3.5f))
         dishes.add(Dish(R.drawable.flan_coco, "Flan de coco", 2.00, 4f))
         dishes.add(Dish(R.drawable.torta_tres_leches, "Torta de tres leches", 5.50, 4.5f))
         dishes.add(Dish(R.drawable.dulce_higos, "Dulce de higos", 3.50, 4f))

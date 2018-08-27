@@ -27,7 +27,7 @@ class DishAdapter(private val context: Context, private val dishes: ArrayList<Di
 
         holder.ivPhoto.setImageResource(dish.photo)
         holder.tvNameDish.text      = dish.name
-        holder.tvPrice.text         = dish.price.toString()
+        holder.tvPrice.text         = "$" + dish.price
         holder.ratingDish.rating    = dish.rating
 
     }
