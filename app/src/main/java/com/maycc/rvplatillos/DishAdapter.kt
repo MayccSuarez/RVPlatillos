@@ -10,12 +10,12 @@ import android.widget.RatingBar
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_layout_dish.view.*
 
-class DishAdapter(private val context: Context, private val dishes: ArrayList<Dish>) : RecyclerView.Adapter<DishAdapter.ViewHolder>(){
+class DishAdapter(private val dishes: ArrayList<Dish>, var listener: ClickListener) : RecyclerView.Adapter<DishAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_layout_dish, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout_dish, parent, false)
 
-        return ViewHolder(view)
+        return ViewHolder(view, listener)
     }
 
     override fun getItemCount(): Int {
@@ -32,10 +32,18 @@ class DishAdapter(private val context: Context, private val dishes: ArrayList<Di
 
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    class ViewHolder(view: View, var listener: ClickListener) : RecyclerView.ViewHolder(view), View.OnClickListener{
         val ivPhoto:    ImageView    = view.ivPhoto
         val tvNameDish: TextView     = view.tvNameDish
         val tvPrice:    TextView     = view.tvPrice
         val ratingDish: RatingBar    = view.ratingDish
+
+        init {
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            listener.onClick(v!!, adapterPosition)
+        }
     }
 }

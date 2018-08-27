@@ -3,6 +3,8 @@ package com.maycc.rvplatillos
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +33,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRecyclerViewDishes() {
         val linearLayoutManager = LinearLayoutManager(this)
-        val adapterDish = DishAdapter(this, dishes)
+        val adapterDish = DishAdapter(dishes, object: ClickListener{
+            override fun onClick(view: View, index: Int) {
+                Toast.makeText(applicationContext, dishes[index].name, Toast.LENGTH_SHORT).show()
+            }
+        })
 
         rvDishes.apply {
             setHasFixedSize(true)
