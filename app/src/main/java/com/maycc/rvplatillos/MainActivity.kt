@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private var dishes = ArrayList<Dish>()
+    private lateinit var adapterDish: DishAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         loadData()
         initRecyclerViewDishes()
+        initSwipeRefresh()
     }
 
     private fun loadData() {
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRecyclerViewDishes() {
         val linearLayoutManager = LinearLayoutManager(this)
-        val adapterDish = DishAdapter(dishes, object: ClickListener{
+        adapterDish = DishAdapter(dishes, object: ClickListener{
             override fun onClick(view: View, index: Int) {
                 Toast.makeText(applicationContext, dishes[index].name, Toast.LENGTH_SHORT).show()
             }
@@ -44,5 +46,17 @@ class MainActivity : AppCompatActivity() {
             adapter = adapterDish
             layoutManager = linearLayoutManager
         }
+    }
+
+    private fun initSwipeRefresh() {
+        swipeRefresh.setOnRefreshListener {
+            fetchData()
+            swipeRefresh.isRefreshing = false
+        }
+    }
+
+    private fun fetchData() {
+        dishes.add(0, Dish(R.drawable.ceviche, "Ceviche", 2.50, 4.5f))
+        adapterDish.notifyDataSetChanged()
     }
 }
