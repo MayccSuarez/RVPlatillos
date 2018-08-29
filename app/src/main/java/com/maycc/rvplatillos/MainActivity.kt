@@ -39,6 +39,10 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(view: View, index: Int) {
                 Toast.makeText(applicationContext, dishes[index].name, Toast.LENGTH_SHORT).show()
             }
+        }, object: LongClickListener{
+            override fun longClick(view: View, index: Int) {
+                Toast.makeText(applicationContext, "CLICK LARGO", Toast.LENGTH_SHORT).show()
+            }
         })
 
         rvDishes.apply {
