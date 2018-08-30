@@ -32,6 +32,14 @@ class DishAdapter(private val dishes: ArrayList<Dish>, var listener: ClickListen
 
     }
 
+    fun startActionMode() {
+
+    }
+
+    fun destroyActionMode() {
+
+    }
+
     class ViewHolder(view: View, var listener: ClickListener, var longListener: LongClickListener) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener{
         val ivPhoto:    ImageView    = view.ivPhoto
         val tvNameDish: TextView     = view.tvNameDish

@@ -3,14 +3,20 @@ package com.maycc.rvplatillos
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import android.support.v7.view.ActionMode
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private var dishes = ArrayList<Dish>()
     private lateinit var adapterDish: DishAdapter
+
+    lateinit var callback: ActionMode.Callback
+    var isActionMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         loadData()
         initRecyclerViewDishes()
         initSwipeRefresh()
+        initActionMode()
     }
 
     private fun loadData() {
@@ -41,7 +48,9 @@ class MainActivity : AppCompatActivity() {
             }
         }, object: LongClickListener{
             override fun longClick(view: View, index: Int) {
-                Toast.makeText(applicationContext, "CLICK LARGO", Toast.LENGTH_SHORT).show()
+                if (!isActionMode) {
+                    startSupportActionMode(callback)
+                }
             }
         })
 
@@ -62,5 +71,31 @@ class MainActivity : AppCompatActivity() {
     private fun fetchData() {
         dishes.add(0, Dish(R.drawable.ceviche, "Ceviche", 2.50, 4.5f))
         adapterDish.notifyDataSetChanged()
+    }
+
+    private fun initActionMode() {
+        callback = object: ActionMode.Callback {
+            override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                // Called after startActionMode
+                // Inflate a menu resource providing context menu items
+                adapterDish.startActionMode()
+                return true
+            }
+
+            override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+                // Called when the user selects a contextual menu item
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                // Called each time the action mode is shown
+                return false
+            }
+
+            override fun onDestroyActionMode(mode: ActionMode?) {
+                // Called when the action mode is finished
+                adapterDish.destroyActionMode()
+            }
+        }
     }
 }
