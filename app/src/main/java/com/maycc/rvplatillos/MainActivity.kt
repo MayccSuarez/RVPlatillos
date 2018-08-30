@@ -1,5 +1,6 @@
 package com.maycc.rvplatillos
 
+import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -8,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import android.support.v7.view.ActionMode
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             }
         }, object: LongClickListener{
             override fun longClick(view: View, index: Int) {
-                adapterDish.selectItems(index)
+                adapterDish.selectItems(index, view)
 
                 if (!isActionMode) {
                     startSupportActionMode(callback)
@@ -57,6 +59,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     myMode?.title = "${adapterDish.getItemsSelected()} Seleccionados"
                 }
+
 
             }
         })

@@ -1,5 +1,8 @@
 package com.maycc.rvplatillos
 
+import android.content.Context
+import android.graphics.Color
+import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,13 +16,11 @@ import kotlinx.android.synthetic.main.item_layout_dish.view.*
 class DishAdapter(private val dishes: ArrayList<Dish>, var listener: ClickListener, var longListener: LongClickListener) : RecyclerView.Adapter<DishAdapter.ViewHolder>(){
 
     var indexesSelected = ArrayList<Int>()
-    lateinit var holder: ViewHolder
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout_dish, parent, false)
 
-        holder = ViewHolder(view, listener, longListener)
-        return holder
+        return ViewHolder(view, listener, longListener)
     }
 
     override fun getItemCount(): Int {
@@ -28,20 +29,24 @@ class DishAdapter(private val dishes: ArrayList<Dish>, var listener: ClickListen
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val dish = dishes[position]
-
         holder.ivPhoto.setImageResource(dish.photo)
         holder.tvNameDish.text      = dish.name
         holder.tvPrice.text         = "$" + dish.price
         holder.ratingDish.rating    = dish.rating
-
     }
 
-    fun selectItems(index: Int) {
+    fun selectItems(index: Int, view: View) {
         if (indexesSelected.contains(index)) {
             indexesSelected.remove(index)
+            paintView(view, Color.WHITE)
         } else {
             indexesSelected.add(index)
+            paintView(view, Color.LTGRAY)
         }
+    }
+
+    private fun paintView(view: View, color: Int) {
+        view.setBackgroundColor(color)
     }
 
     fun deleteItemsSelected() {
@@ -62,6 +67,7 @@ class DishAdapter(private val dishes: ArrayList<Dish>, var listener: ClickListen
         val tvNameDish: TextView     = view.tvNameDish
         val tvPrice:    TextView     = view.tvPrice
         val ratingDish: RatingBar    = view.ratingDish
+        val container: ConstraintLayout = view.container
 
         init {
             view.setOnClickListener(this)
