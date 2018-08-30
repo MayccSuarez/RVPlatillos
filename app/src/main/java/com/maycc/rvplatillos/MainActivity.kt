@@ -51,16 +51,13 @@ class MainActivity : AppCompatActivity() {
             }
         }, object: LongClickListener{
             override fun longClick(view: View, index: Int) {
-                adapterDish.selectItems(index, view)
+                adapterDish.selectItems(index)
 
                 if (!isActionMode) {
                     startSupportActionMode(callback)
-                    isActionMode = true
                 } else {
                     myMode?.title = "${adapterDish.getItemsSelected()} Seleccionados"
                 }
-
-
             }
         })
 
@@ -90,7 +87,8 @@ class MainActivity : AppCompatActivity() {
                 // Inflate a menu resource providing context menu items
                 menuInflater.inflate(R.menu.menu_action, menu)
                 myMode = mode
-                mode?.finish()
+                isActionMode = true
+
                 return true
             }
 
@@ -98,10 +96,16 @@ class MainActivity : AppCompatActivity() {
                 // Called when the user selects a contextual menu item
                 when (item?.itemId) {
                     R.id.itemDelete -> {
-                        adapterDish.deleteItemsSelected()
+                        if (adapterDish.getItemsSelected() > 0) {
+                            adapterDish.deleteItemsSelected()
+                            Toast.makeText(applicationContext, "Items eliminados!!!", Toast.LENGTH_SHORT).show()
+                            mode?.finish()
+
+                        } else {
+                            Toast.makeText(applicationContext, "Ningún item seleccionado!!!", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
-
                 return true
             }
 
@@ -113,7 +117,6 @@ class MainActivity : AppCompatActivity() {
 
             override fun onDestroyActionMode(mode: ActionMode?) {
                 // Called when the action mode is finished
-                Toast.makeText(applicationContext, "ON DESTROY MODE", Toast.LENGTH_SHORT).show()
                 isActionMode = false
                 adapterDish.clear()
             }

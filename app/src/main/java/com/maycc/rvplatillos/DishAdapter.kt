@@ -20,7 +20,7 @@ class DishAdapter(private val dishes: ArrayList<Dish>, var listener: ClickListen
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout_dish, parent, false)
 
-        return ViewHolder(view, listener, longListener)
+        return  ViewHolder(view, listener, longListener)
     }
 
     override fun getItemCount(): Int {
@@ -33,27 +33,33 @@ class DishAdapter(private val dishes: ArrayList<Dish>, var listener: ClickListen
         holder.tvNameDish.text      = dish.name
         holder.tvPrice.text         = "$" + dish.price
         holder.ratingDish.rating    = dish.rating
-    }
 
-    fun selectItems(index: Int, view: View) {
-        if (indexesSelected.contains(index)) {
-            indexesSelected.remove(index)
-            paintView(view, Color.WHITE)
+        if (indexesSelected.contains(position)) {
+            holder.itemView.setBackgroundColor(Color.LTGRAY)
         } else {
-            indexesSelected.add(index)
-            paintView(view, Color.LTGRAY)
+            holder.itemView.setBackgroundColor(Color.WHITE)
         }
     }
 
-    private fun paintView(view: View, color: Int) {
-        view.setBackgroundColor(color)
+    fun selectItems(index: Int) {
+        if (indexesSelected.contains(index)) {
+            indexesSelected.remove(index)
+        } else {
+            indexesSelected.add(index)
+        }
+        notifyDataSetChanged()
     }
 
     fun deleteItemsSelected() {
+        val itemsToDelete = ArrayList<Dish>()
+
         for (i in indexesSelected) {
-            Log.d("DELETE ITEMS", i.toString())
+            itemsToDelete.add(dishes[i])
         }
+        dishes.removeAll(itemsToDelete)
+        itemsToDelete.clear()
         clear()
+        notifyDataSetChanged()
     }
 
     fun clear() {
