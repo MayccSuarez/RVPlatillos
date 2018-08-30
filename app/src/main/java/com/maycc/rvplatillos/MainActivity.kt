@@ -1,6 +1,5 @@
 package com.maycc.rvplatillos
 
-import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -56,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 if (!isActionMode) {
                     startSupportActionMode(callback)
                 } else {
-                    myMode?.title = "${adapterDish.getItemsSelected()} Seleccionados"
+                    myMode?.title = "${adapterDish.countIndexesSelected()} Seleccionados"
                 }
             }
         })
@@ -94,9 +93,10 @@ class MainActivity : AppCompatActivity() {
 
             override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
                 // Called when the user selects a contextual menu item
+                Log.d("ATRAS", item?.itemId.toString())
                 when (item?.itemId) {
                     R.id.itemDelete -> {
-                        if (adapterDish.getItemsSelected() > 0) {
+                        if (adapterDish.countIndexesSelected() > 0) {
                             adapterDish.deleteItemsSelected()
                             Toast.makeText(applicationContext, "Items eliminados!!!", Toast.LENGTH_SHORT).show()
                             mode?.finish()
@@ -119,6 +119,7 @@ class MainActivity : AppCompatActivity() {
                 // Called when the action mode is finished
                 isActionMode = false
                 adapterDish.clear()
+                adapterDish.notifyDataSetChanged()
             }
         }
     }

@@ -66,14 +66,13 @@ class DishAdapter(private val dishes: ArrayList<Dish>, var listener: ClickListen
         indexesSelected.clear()
     }
 
-    fun getItemsSelected() = indexesSelected.count()
+    fun countIndexesSelected() = indexesSelected.count()
 
     class ViewHolder(view: View, var listener: ClickListener, var longListener: LongClickListener) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener{
         val ivPhoto:    ImageView    = view.ivPhoto
         val tvNameDish: TextView     = view.tvNameDish
         val tvPrice:    TextView     = view.tvPrice
         val ratingDish: RatingBar    = view.ratingDish
-        val container: ConstraintLayout = view.container
 
         init {
             view.setOnClickListener(this)
