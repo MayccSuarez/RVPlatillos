@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var callback: ActionMode.Callback
     var isActionMode = false
+    var myMode: ActionMode? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +49,15 @@ class MainActivity : AppCompatActivity() {
             }
         }, object: LongClickListener{
             override fun longClick(view: View, index: Int) {
+                adapterDish.selectItems(index)
+
                 if (!isActionMode) {
                     startSupportActionMode(callback)
+                    isActionMode = true
+                } else {
+                    myMode?.title = "${adapterDish.getItemsSelected()} Seleccionados"
                 }
+
             }
         })
 
@@ -78,23 +85,34 @@ class MainActivity : AppCompatActivity() {
             override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
                 // Called after startActionMode
                 // Inflate a menu resource providing context menu items
-                adapterDish.startActionMode()
+                menuInflater.inflate(R.menu.menu_action, menu)
+                myMode = mode
+                mode?.finish()
                 return true
             }
 
             override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
                 // Called when the user selects a contextual menu item
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                when (item?.itemId) {
+                    R.id.itemDelete -> {
+                        adapterDish.deleteItemsSelected()
+                    }
+                }
+
+                return true
             }
 
             override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
                 // Called each time the action mode is shown
+                mode?.title = "1  Seleccionado"
                 return false
             }
 
             override fun onDestroyActionMode(mode: ActionMode?) {
                 // Called when the action mode is finished
-                adapterDish.destroyActionMode()
+                Toast.makeText(applicationContext, "ON DESTROY MODE", Toast.LENGTH_SHORT).show()
+                isActionMode = false
+                adapterDish.clear()
             }
         }
     }
